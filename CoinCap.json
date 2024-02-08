@@ -1,0 +1,228 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CoinCap API v2",
+    "version": "2.0",
+    "description": "API for accessing cryptocurrency assets information and their historical data."
+  },
+  "servers": [
+    {
+      "url": "https://api.coincap.io/v2"
+    }
+  ],
+  "paths": {
+    "/assets": {
+      "get": {
+        "summary": "Retrieve assets",
+        "description": "Fetches information about cryptocurrency assets, optionally filtered.",
+        "operationId": "getAssets",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search by asset id (bitcoin) or symbol (BTC)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "required": false,
+            "description": "Query with multiple ids (e.g., bitcoin,ethereum,monero)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Max limit of 2000",
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "maximum": 2000
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{id}": {
+      "get": {
+        "summary": "Retrieve a single asset",
+        "description": "Fetches details of a single cryptocurrency asset by its ID.",
+        "operationId": "getAssetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Asset ID, e.g., 'bitcoin'",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Asset"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{id}/history": {
+      "get": {
+        "summary": "Retrieve asset history",
+        "description": "Fetches historical data for a cryptocurrency asset.",
+        "operationId": "getAssetHistory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Asset ID, e.g., 'bitcoin'",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": true,
+            "description": "Point-in-time interval.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "m1",
+                "m5",
+                "m15",
+                "m30",
+                "h1",
+                "h2",
+                "h6",
+                "h12",
+                "d1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical data for the asset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssetHistory"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssetListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Asset"
+            }
+          }
+        }
+      },
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "supply": {
+            "type": "string"
+          },
+          "maxSupply": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketCapUsd": {
+            "type": "string"
+          },
+          "volumeUsd24Hr": {
+            "type": "string"
+          },
+          "priceUsd": {
+            "type": "string"
+          },
+          "changePercent24Hr": {
+            "type": "string"
+          },
+          "vwap24Hr": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AssetHistory": {
+        "type": "object",
+        "properties": {
+          "priceUsd": {
+            "type": "string"
+          },
+          "time": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "priceUsd",
+          "time"
+        ]
+      }
+    }
+  }
+}
