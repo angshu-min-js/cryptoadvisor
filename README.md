@@ -1,4 +1,4 @@
-# Unveiling the Future of Crypto Investment: Meet Your New Crypto Advisor
+# Crypto Advisor a custom GPT app
 
 In the dynamic world of cryptocurrency, navigating through market trends and momentum is crucial for strategic investment. Enter the "Crypto Advisor," a groundbreaking custom GPT designed to redefine your approach to crypto investments with unmatched precision and insights. By harnessing the robust capabilities of CoinCap API and CoinGecko API, the Crypto Advisor emerges as your ultimate guide in the volatile crypto market.
 
